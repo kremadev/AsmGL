@@ -2,7 +2,6 @@
 
 default rel
 
-extern PRINTSWITCH
 extern glfwInit
 extern glfwWindowHint
 extern glfwCreateWindow
@@ -17,20 +16,33 @@ extern glad_glClearColor
 
 section .data
 title db "AsmGL"
+
 clearcolR dd 0.2
 clearcolG dd 0.3
 clearcolB dd 0.3
 clearcolA dd 1.0
 
+vertices:
+dd 0.0
+dd 0.5
+dd 0.0
+
+dd 0.5
+dd -0.5
+dd 0.0
+
+dd -0.5
+dd -0.5
+dd 0.0 
+
 section .bss
 window resq 1
 
 section .text
-global main
-main:
+global MAINASM
+MAINASM:
 	sub rsp, 8
 
-	call PRINTSWITCH
 	call glfwInit
 	mov rdi, GLFW_CONTEXT_VERSION_MAJOR
 	mov rsi, 4
