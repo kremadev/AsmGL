@@ -17,9 +17,9 @@ extern glad_glClearColor
 
 section .data
 title db "AsmGL"
-clearcolR dd 1.0
-clearcolG dd 1.0
-clearcolB dd 1.0
+clearcolR dd 0.2
+clearcolG dd 0.3
+clearcolB dd 0.3
 clearcolA dd 1.0
 
 section .bss
@@ -72,10 +72,10 @@ main:
 	mov rax, [rel glad_glClear]
 	call rax
 
-	mov rdi, clearcolR
-	mov rsi, clearcolG
-	mov rdx, clearcolB
-	mov rcx, clearcolA
+	movss xmm0, [clearcolR]
+	movss xmm1, [clearcolG]
+	movss xmm2, [clearcolB]
+	movss xmm3, [clearcolA]
 	mov rax, [rel glad_glClearColor]
 	call rax
 

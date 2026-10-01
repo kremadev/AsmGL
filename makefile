@@ -17,7 +17,6 @@ main: $(OBJ)
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-# Generate NASM %defines from the C headers so asm can use GL_/GLFW_ macros
 $(GL_INC): include/glad/include/glad/gl.h
 	gcc -E -dM -Iinclude/glad/include -include glad/gl.h -include GLFW/glfw3.h -x c /dev/null \
 		| grep -E '#define (GL_|GLFW_)[A-Za-z0-9_]* .+' \
