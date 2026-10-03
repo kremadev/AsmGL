@@ -13,6 +13,9 @@ extern glfwPollEvents
 extern glfwGetProcAddress
 extern glad_glClear
 extern glad_glClearColor
+extern glad_glGenBuffers
+extern glad_glBindBuffer
+extern glad_glBufferData
 
 section .data
 title db "AsmGL"
@@ -33,10 +36,19 @@ dd 0.0
 
 dd -0.5
 dd -0.5
-dd 0.0 
+dd 0.0
+
+verticessize equ $ - vertices
+
+vertexSource db "#version 460 core", 10, "layout (location = 0) in vec3 aPos;", 10, "void main() {", 10, "  gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);", 10, "}", 0
 
 section .bss
 window resq 1
+
+vbo resd 1
+
+vertexShader resd 1
+fragmentShader resd 1
 
 section .text
 global MAINASM
@@ -75,6 +87,21 @@ MAINASM:
 	mov rdx, 800
 	mov rcx, 800
 	mov rax, [rel glad_glViewport]
+	call rax
+
+	mov rdi, 1
+	mov rsi, [vbo]
+	call glad_glGenBuffers
+
+	mov rdi, GL_ARRAY_BUFFER
+	mov rsi, vbo
+	call glad_glBindBuffer
+
+	mov rdi, GL_ARRAY_BUFFER
+	mov rsi, verticessize
+	lea rdx, [vertices]
+	mov rcx, GL_STATIC_DRAW
+	mov rax, [rel glad_glBufferData]
 	call rax
 
 	.loop:
